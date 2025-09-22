@@ -56,9 +56,7 @@
           datasets: [{
             label: "Despesas",
             data,
-            backgroundColor: [
-              "#4ade80", "#2563eb", "#f97316", "#f43f5e", "#8b5cf6"
-            ]
+            backgroundColor: ["#4ade80", "#2563eb", "#f97316", "#f43f5e", "#8b5cf6"]
           }]
         },
         options: {
@@ -75,23 +73,10 @@
       });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      renderDespesasChart();
-
-      const toggleBtn = document.getElementById("toggleChartType");
-      if (toggleBtn) {
-        toggleBtn.addEventListener("click", () => {
-          chartType = chartType === "bar" ? "pie" : "bar";
-          renderDespesasChart();
-        });
-      }
-    });
-    
     /*-------------------- GRÁFICO DO RELATÓRIO --------------------*/
     let relatorioChart = null;
-    let periodoSelecionado = "Mensal"; // padrão
+    let periodoSelecionado = "Mensal";
 
-    // Renderiza gráfico de relatórios
     function renderRelatorioChart(periodo = periodoSelecionado) {
       const ctx = document.getElementById("relatorioChart")?.getContext("2d");
       if (!ctx) return;
@@ -107,21 +92,18 @@
           d.setDate(hoje.getDate() - i);
           const dia = d.toLocaleDateString("pt-BR", { weekday: "short" });
           labels.push(dia);
-
           const saldoDia = transactions
             .filter(tx => new Date(tx.date).toDateString() === d.toDateString())
             .reduce((acc, tx) => acc + (tx.type === "despesa" ? -tx.amount : tx.amount), 0);
           data.push(saldoDia);
         }
       }
-
       if (periodo === "Mensal") {
         for (let i = 5; i >= 0; i--) {
           const d = new Date();
           d.setMonth(hoje.getMonth() - i);
           const mes = d.toLocaleDateString("pt-BR", { month: "short" });
           labels.push(mes);
-
           const saldoMes = transactions
             .filter(tx => {
               const dt = new Date(tx.date);
@@ -131,12 +113,10 @@
           data.push(saldoMes);
         }
       }
-
       if (periodo === "Anual") {
         for (let i = 4; i >= 0; i--) {
           const ano = hoje.getFullYear() - i;
           labels.push(ano);
-
           const saldoAno = transactions
             .filter(tx => new Date(tx.date).getFullYear() === ano)
             .reduce((acc, tx) => acc + (tx.type === "despesa" ? -tx.amount : tx.amount), 0);
@@ -144,10 +124,7 @@
         }
       }
 
-      // Destruir gráfico antigo
       if (relatorioChart) relatorioChart.destroy();
-
-      // Criar gráfico novo
       relatorioChart = new Chart(ctx, {
         type: "line",
         data: {
@@ -172,33 +149,25 @@
         }
       });
 
-      // Labels abaixo
-      const labelsDiv = document.getElementById("relatorioLabels");
-      if (labelsDiv) {
-        labelsDiv.innerHTML = labels.map(l => `<p class="text-[#96c5a9] text-xs font-bold">${l}</p>`).join("");
-      }
+      
 
-      // Total
       const total = data.reduce((a, b) => a + b, 0);
-      document.getElementById("relatorio_total").textContent =
+      const totalEl = document.getElementById("relatorio_total");
+      if (totalEl) totalEl.textContent =
         "R$ " + total.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
     }
 
-    // Renderiza principais despesas
     function renderTopExpenses() {
       const container = document.getElementById("top_expenses");
       if (!container) return;
-
       const transactions = getTransactions();
       const gastosPorCategoria = {};
-
       transactions.forEach(tx => {
         if (tx.type === "despesa") {
           gastosPorCategoria[tx.categoryLabel || tx.category] =
             (gastosPorCategoria[tx.categoryLabel || tx.category] || 0) + tx.amount;
         }
       });
-
       const top = Object.entries(gastosPorCategoria)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 3);
@@ -213,17 +182,21 @@
             <p class="text-[#96c5a9] text-sm">R$ ${valor.toFixed(2)}</p>
           </div>
           <p class="text-white font-bold text-lg">R$ ${valor.toFixed(2)}</p>
-        </div>
-      `).join("");
+        </div>`).join("");
     }
 
-    // Inicializar relatórios
-    document.addEventListener("DOMContentLoaded", () => {
-      renderRelatorioChart("Mensal");
-      renderTopExpenses();
-    });
+    /* -------------------- Inicialização global -------------------- */
+    renderDespesasChart();
+    renderRelatorioChart("Mensal");
+    renderTopExpenses();
 
-    // Troca de período
+    const toggleBtn = document.getElementById("toggleChartType");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        chartType = chartType === "bar" ? "pie" : "bar";
+        renderDespesasChart();
+      });
+    }
     document.querySelectorAll("input[name='period']").forEach(radio => {
       radio.addEventListener("change", e => {
         periodoSelecionado = e.target.value;
