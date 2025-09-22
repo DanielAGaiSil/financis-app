@@ -1,0 +1,610 @@
+<!-- A FAZER: Confirmar a tech stack (quais linguagens e/ou ferramentas usar para o programa)-->
+<!-- A FAZER: Fazer todos os gráficos e abas funcionar junto com o backend quando for feito -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Dinheiro - App Financeiro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Spline+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="./assets/style.css">
+</head>
+
+<body class="bg-gray-900 text-white">
+    <!-- Página Home -->
+    <div id="home" class="page active">
+        <div class="relative flex min-h-screen flex-col bg-[#111827] justify-between">
+            <div class="flex-grow">
+                <header class="flex items-center justify-between p-4 pb-2">
+                    <!-- Imagem de perfil se torna o link -->
+                    <a href="#" data-page="perfil" class="nav-button block w-11 h-11">
+                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBEv-nJw6VVSMQzjKve1SVJjyRdc95XeV3q5OqTgU75lmLzTr7s9scoEG1pcy-oCf6Z7ZC1T-f5eiui9gn01o3l6xPX6n8sMIbLH-aC4_1O2JlPI5zB7iAbkwY_sFu7QYmlEHvYFll1wA_642yf40taefnQW3vtz8qqK4jDYJxKrrpQFVVCzTtvTKfhBGkFIL9wSTZtTh4Vlh0GNGjUoVnlec7dWL-XeYVJax5tc93wV3F7TxKoJXizDTCMWAkSYV79QJn6zZPJZ_4");'>
+                        </div>
+                    </a>
+
+                    <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">
+                        Financis
+                    </h2>
+
+                    <div class="flex w-12 items-center justify-end">
+                        <button
+                            class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 bg-transparent text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+                            <span class="material-symbols-outlined">notifications</span>
+                        </button>
+                    </div>
+                </header>
+
+                <main class="p-4">
+                    <div class="rounded-2xl bg-gradient-to-br from-[#4ade80] to-[#2563eb] p-6 shadow-lg text-white">
+                        <p class="text-sm opacity-80">Saldo Final</p>
+                        <span id="saldo_consolidado" class="text-4xl font-bold mt-2">R$ 0,00</span>
+                    </div>
+                    <section class="mt-8">
+                        <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
+                            Despesas por Categoria
+                        </h3>
+                        <div class="mt-4 rounded-2xl bg-gray-800 p-4">
+                            <div class="flex justify-between items-center text-white mb-4">
+                                <div>
+                                <p class="text-sm text-gray-400">Este Mês</p>
+                                <p id="despesas_mes" class="text-2xl font-bold">R$ 0,00</p>
+                                </div>
+                                <button id="toggleChartType" class="text-gray-400 hover:text-white">
+                                <span class="material-symbols-outlined">pie_chart</span>
+                                </button>
+                            </div>
+                            <!-- Fix: container com altura fixa -->
+                            <div class="h-64"> 
+                                <canvas id="despesasChart"></canvas>
+                            </div>
+                        </div>
+                        </section>
+
+                    <section class="mt-8">
+                        <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Resumo do Mês</h3>
+                        <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-zinc-900 p-4 rounded-xl text-center">
+                            <p class="text-zinc-400 text-sm">Entradas</p>
+                            <p id="totalEntradas" class="text-green-500 font-bold text-xl">R$ 0,00</p>
+                        </div>
+                        <div class="bg-zinc-900 p-4 rounded-xl text-center">
+                            <p class="text-zinc-400 text-sm">Saídas</p>
+                            <p id="totalSaidas" class="text-red-500 font-bold text-xl">R$ 0,00</p>
+                        </div>
+                        <div class="bg-zinc-900 p-4 rounded-xl text-center">
+                            <p class="text-zinc-400 text-sm">Saldo</p>
+                            <p id="totalSaldo" class="text-green-500 font-bold text-xl">R$ 0,00</p>
+                        </div>
+                    </div>
+
+                    </section>
+
+                    <section class="mt-8">
+                        <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Notificações e
+                            Insights</h3>
+                        <div class="space-y-4 mt-4">
+                            <div class="flex items-center gap-4 rounded-2xl bg-gray-800 p-4">
+                                <div class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-white">warning</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <p class="text-white text-sm font-medium">Atenção</p>
+                                    <p class="text-gray-400 text-sm">Seu orçamento de Lazer está quase no limite.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 rounded-2xl bg-gray-800 p-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-white">info</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <p class="text-white text-sm font-medium">Aviso</p>
+                                    <p class="text-gray-400 text-sm">Você gastou 20% a mais em restaurantes este mês.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página Transações -->
+    <div id="transacoes" class="page">
+        <div class="relative flex min-h-screen flex-col bg-[#121212] justify-between">
+            <div class="flex flex-col">
+                <!-- Header -->
+                <header class="sticky top-0 z-10 flex flex-col bg-[#121212]/80 backdrop-blur-sm">
+                    <div class="flex items-center p-4 justify-between">
+                        <h1 class="text-white text-xl font-bold">Transações</h1>
+                        <button onclick="toggleAddTransaction()"
+                            class="flex items-center justify-center size-10 rounded-full bg-[var(--primary-color)] text-black">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+
+                    <!-- Barra de busca -->
+                    <div class="px-4 pb-3 pt-1">
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
+                            <input
+                                class="form-input w-full rounded-full border-none bg-zinc-800 py-2.5 pl-10 pr-4 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
+                                placeholder="Buscar transações" type="text" />
+                        </div>
+                    </div>
+
+                    <!-- Filtros -->
+            <div class="flex gap-2 p-4 pt-0 overflow-x-auto">
+                <!-- Filtro por Data -->
+                <div class="relative">
+                    <button id="filterDateBtn"
+                        class="filter-btn flex h-9 items-center justify-center gap-x-2 rounded-full bg-zinc-800 px-4">
+                        <p class="text-white text-sm font-medium">Data</p>
+                        <span class="material-symbols-outlined text-base text-white">expand_more</span>
+                    </button>
+                    <!-- Dropdown de Data -->
+                    <div id="filterDateMenu"
+                        class="filter-menu absolute hidden top-10 left-0 bg-zinc-900 border border-zinc-700 rounded-xl p-2 shadow-xl z-[9999] w-40">
+                        <button data-date="all" class="filter-option w-full text-left px-2 py-1 text-white hover:bg-zinc-700 rounded">Todas</button>
+                        <button data-date="today" class="filter-option w-full text-left px-2 py-1 text-white hover:bg-zinc-700 rounded">Hoje</button>
+                        <button data-date="week" class="filter-option w-full text-left px-2 py-1 text-white hover:bg-zinc-700 rounded">Esta Semana</button>
+                        <button data-date="month" class="filter-option w-full text-left px-2 py-1 text-white hover:bg-zinc-700 rounded">Este Mês</button>
+                </div>
+
+                <!-- Filtro por Categoria -->
+                <div class="relative">
+                    <button id="filterCategoryBtn"
+                        class="filter-btn flex h-9 items-center justify-center gap-x-2 rounded-full bg-zinc-800 px-4">
+                        <p class="text-white text-sm font-medium">Categoria</p>
+                        <span class="material-symbols-outlined text-base text-white">expand_more</span>
+                    </button>
+                    <!-- Dropdown de Categoria (vai ser populado dinamicamente) -->
+                    <div id="filterCategoryMenu"
+                        class="filter-menu absolute hidden top-10 left-0 bg-zinc-900 border border-zinc-700 rounded-xl p-2 shadow-xl z-[9999] w-40">
+                <!-- Populado dinamicamente -->
+                    </div>
+                </div>
+
+                <!-- Filtro por Tipo -->
+                <div class="relative">
+                    <button id="filterTypeBtn"
+                        class="filter-btn flex h-9 items-center justify-center gap-x-2 rounded-full bg-zinc-800 px-4">
+                        <p class="text-white text-sm font-medium">Tipo</p>
+                        <span class="material-symbols-outlined text-base text-white">expand_more</span>
+                    </button>
+                    <!-- Dropdown de Tipo -->
+                    <div id="filterTypeMenu"
+                        class="filter-menu absolute hidden top-10 left-0 bg-zinc-900 border border-zinc-700 rounded-xl p-2 shadow-xl z-[9999] w-40">
+                        <button data-type="all" class="filter-option w-full text-left px-2 py-1 text-white hover:bg-zinc-700 rounded">Todos</button>
+                        <button data-type="receita" class="filter-option w-full text-left px-2 py-1 text-white hover:bg-zinc-700 rounded">Receita</button>
+                        <button data-type="despesa" class="filter-option w-full text-left px-2 py-1 text-white hover:bg-zinc-700 rounded">Despesa</button>
+                    </div>
+                </div>
+            </div>
+                </header>
+
+                <!-- Lista de transações -->
+                <main id="transactionsList" class="flex flex-col gap-px">
+                    <!-- Aqui ficam as transações -->
+                    <div class="flex items-center gap-4 bg-zinc-900 px-4 py-3 justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="flex size-11 items-center justify-center rounded-full bg-zinc-800 text-white">
+                                <span class="material-symbols-outlined">shopping_cart</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="font-medium text-white">Mercado</p>
+                                <p class="text-sm text-zinc-400">Alimentos</p>
+                            </div>
+                        </div>
+                        <div class="shrink-0">
+                            <p class="font-medium text-red-500">- R$ 150,00</p>
+                            <p class="text-right text-xs text-zinc-500">15/07/24</p>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Aba de adicionar transação (inicialmente oculta) -->
+                <div id="addTransactionForm" class="hidden absolute inset-0 bg-[#111827] z-20 overflow-y-auto">
+                    <div class="flex flex-col min-h-screen">
+                        <!-- Header -->
+                        <header class="flex items-center justify-between p-4 pb-2">
+                            <button onclick="toggleAddTransaction()"
+                                class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 text-white">
+                                <span class="material-symbols-outlined">arrow_back</span>
+                            </button>
+                            <h2 class="text-white text-lg font-bold flex-1 text-center">Nova Transação</h2>
+                            <div class="w-10"></div>
+                        </header>
+
+                        <!-- Formulário -->
+                        <main class="p-4">
+                            <form id="transactionForm" class="space-y-6">
+                                <!-- Tipo -->
+                                <div class="mb-6">
+                                    <div class="flex bg-gray-800 rounded-2xl p-1">
+                                        <button id="expenseBtn" type="button"
+                                            class="flex-1 py-3 px-4 rounded-xl text-white bg-red-600 font-medium">
+                                            <span class="material-symbols-outlined mr-2">remove</span> Despesa
+                                        </button>
+                                        <button id="incomeBtn" type="button"
+                                            class="flex-1 py-3 px-4 rounded-xl text-gray-400 font-medium">
+                                            <span class="material-symbols-outlined mr-2">add</span> Receita
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Valor -->
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Valor</label>
+                                    <div class="relative">
+                                        <span
+                                            class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg">R$</span>
+                                        <input id="amount" type="number" step="0.01" required
+                                            class="w-full pl-12 pr-4 py-4 bg-gray-800 border border-gray-700 rounded-2xl text-white text-2xl font-bold placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            placeholder="0,00">
+                                    </div>
+                                </div>
+
+                                <!-- Categoria -->
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Categoria</label>
+                                    <select id="category" required
+                                        class="w-full px-4 py-4 bg-gray-800 border border-gray-700 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-green-500">
+                                        <option value="">Selecione uma categoria</option>
+                                        <optgroup label="Despesas" id="expenseCategories">
+                                            <option value="alimentacao">🍽️ Alimentação</option>
+                                            <option value="transporte">🚗 Transporte</option>
+                                            <option value="moradia">🏠 Moradia</option>
+                                            <option value="lazer">🎬 Lazer</option>
+                                            <option value="saude">🏥 Saúde</option>
+                                            <option value="educacao">📚 Educação</option>
+                                            <option value="compras">🛍️ Compras</option>
+                                            <option value="outros">📦 Outros</option>
+                                        </optgroup>
+                                        <optgroup label="Receitas" id="incomeCategories" style="display: none;">
+                                            <option value="salario">💰 Salário</option>
+                                            <option value="freelance">💻 Freelance</option>
+                                            <option value="investimentos">📈 Investimentos</option>
+                                            <option value="vendas">🏪 Vendas</option>
+                                            <option value="outros_receita">💵 Outros</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <!-- Descrição -->
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Descrição</label>
+                                    <input id="description" type="text" required
+                                        class="w-full px-4 py-4 bg-gray-800 border border-gray-700 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        placeholder="Ex: Almoço no restaurante">
+                                </div>
+
+                                <!-- Data -->
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Data</label>
+                                    <input id="date" type="date" required
+                                        class="w-full px-4 py-4 bg-gray-800 border border-gray-700 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-green-500">
+                                </div>
+
+                                <!-- Conta -->
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Conta</label>
+                                    <select id="account"
+                                        class="w-full px-4 py-4 bg-gray-800 border border-gray-700 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-green-500">
+                                        <option value="carteira">💳 Carteira</option>
+                                        <option value="conta_corrente">🏦 Conta Corrente</option>
+                                        <option value="poupanca">🏛️ Poupança</option>
+                                    </select>
+                                </div>
+
+                                <!-- Botões -->
+                                <div class="flex gap-4 pt-4">
+                                    <button type="button" onclick="toggleAddTransaction()"
+                                        class="flex-1 py-4 px-6 bg-gray-700 text-white rounded-2xl font-medium hover:bg-gray-600">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit"
+                                        class="flex-1 py-4 px-6 bg-green-500 text-black rounded-2xl font-bold hover:bg-green-600">
+                                        Salvar
+                                    </button>
+                                </div>
+                            </form>
+                        </main>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Página Orçamento -->
+    <div id="orcamento" class="page">
+        <div class="relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-[--bg-primary]">
+            <!-- Header -->
+        <header class="sticky top-0 z-10 bg-[--bg-primary]/80 backdrop-blur-sm">
+            <div class="flex items-center p-4">
+                <h1 class="flex-1 text-center text-xl font-bold text-[--text-primary]">Orçamento</h1>
+                    <!-- Botão para abrir modal de adicionar orçamento -->
+                    <button onclick="toggleAddBudget()" class="text-[--text-primary]">
+                    <span class="material-symbols-outlined">add_circle_outline</span>
+                    </button>
+                </div>
+        </header>
+            <!-- Conteúdo -->
+            <main class="flex-1 px-4 pt-4 pb-8">
+            <!-- Lista dinâmica de orçamentos -->
+            <div id="budgetsList" class="space-y-4"></div>
+            </main>
+        </div>
+    </div>
+
+        <!-- Modal de adicionar orçamento -->
+        <div id="addBudgetForm" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-zinc-900 rounded-xl p-6 w-[90%] max-w-md">
+                <h3 class="text-white text-lg font-bold mb-4">Novo Orçamento</h3>
+                <form id="budgetForm" class="space-y-4">
+            <!-- Seleção de categoria -->
+            <div>
+                <label class="block text-sm text-white mb-1">Categoria</label>
+                <select id="budgetCategory" class="w-full bg-zinc-800 text-white rounded-lg p-2">
+                <option value="alimentacao">🍽️ Alimentação</option>
+                <option value="transporte">🚗 Transporte</option>
+                <option value="moradia">🏠 Moradia</option>
+                <option value="lazer">🎬 Lazer</option>
+                <option value="saude">💊 Saúde</option>
+                <option value="educacao">📚 Educação</option>
+                <option value="compras">🛍️ Compras</option>
+                </select>
+            </div>
+
+            <!-- Valor limite -->
+            <div>
+                <label class="block text-sm text-white mb-1">Limite (R$)</label>
+                <input type="number" step="0.01" id="budgetLimit" class="w-full bg-zinc-800 text-white rounded-lg p-2">
+            </div>
+
+            <!-- Botões -->
+            <div class="flex gap-2 pt-2">
+                <button type="submit" class="flex-1 bg-green-500 text-black py-2 rounded-lg font-medium">Salvar</button>
+                <button type="button" onclick="toggleAddBudget()" class="flex-1 bg-gray-700 text-white py-2 rounded-lg font-medium">Cancelar</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    <!-- Página Relatórios -->
+    <div id="relatorios" class="page">
+    <div class="relative flex min-h-screen flex-col bg-[#122118] justify-between">
+        <div class="flex-grow">
+        <div class="flex items-center bg-[#122118] p-4 pb-2 justify-between sticky top-0 z-10">
+            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">
+            Relatórios
+            </h2>
+        </div>
+
+        <!-- Botões de período -->
+        <div class="px-4 py-3">
+            <div class="flex h-12 flex-1 items-center justify-center rounded-full bg-[#264532] p-1.5">
+            <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-full px-4 has-[:checked]:bg-[var(--primary-color)] has-[:checked]:text-black text-[#96c5a9] text-sm font-bold transition-colors">
+                <span class="truncate">Semanal</span>
+                <input class="sr-only" name="period" type="radio" value="Semanal" />
+            </label>
+            <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-full px-4 has-[:checked]:bg-[var(--primary-color)] has-[:checked]:text-black text-[#96c5a9] text-sm font-bold transition-colors">
+                <span class="truncate">Mensal</span>
+                <input checked class="sr-only" name="period" type="radio" value="Mensal" />
+            </label>
+            <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-full px-4 has-[:checked]:bg-[var(--primary-color)] has-[:checked]:text-black text-[#96c5a9] text-sm font-bold transition-colors">
+                <span class="truncate">Anual</span>
+                <input class="sr-only" name="period" type="radio" value="Anual" />
+            </label>
+            </div>
+        </div>
+
+        <!-- Card com gráfico -->
+        <div class="px-4 pt-4 pb-6">
+            <div class="flex min-w-72 flex-1 flex-col gap-4 rounded-3xl bg-[#1A2D22] p-6">
+            <p class="text-white/80 text-base font-medium">Receitas e Despesas</p>
+            <p id="relatorio_total" class="text-white tracking-tight text-4xl font-bold">R$ 0,00</p>
+            <div class="flex items-center gap-2">
+                <p class="text-[#96c5a9] text-sm font-normal">Período selecionado</p>
+            </div>
+
+            <div class="flex min-h-[220px] flex-1 flex-col gap-4 py-4">
+                <div class="h-56">
+                <canvas id="relatorioChart"></canvas>
+                </div>
+                <div id="relatorioLabels" class="flex justify-around"></div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Principais despesas -->
+        <h2 class="text-white text-xl font-bold tracking-[-0.015em] px-4 pb-3 pt-2">Principais Despesas</h2>
+        <div id="top_expenses" class="space-y-2 px-2 pb-6">
+            <!-- preenchido dinamicamente -->
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página Perfil -->
+    <div id="perfil" class="page">
+        <div class="relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gray-950">
+            <div class="flex-grow">
+                <div class="flex items-center p-4 pb-2 justify-between">
+                    <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-6">
+                        Perfil</h2>
+                </div>
+
+                <div class="flex p-4">
+                    <div class="flex w-full flex-col gap-4 items-center">
+                        <div class="flex gap-4 flex-col items-center">
+                            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full min-h-32 w-32"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBEv-nJw6VVSMQzjKve1SVJjyRdc95XeV3q5OqTgU75lmLzTr7s9scoEG1pcy-oCf6Z7ZC1T-f5eiui9gn01o3l6xPX6n8sMIbLH-aC4_1O2JlPI5zB7iAbkwY_sFu7QYmlEHvYFll1wA_642yf40taefnQW3vtz8qqK4jDYJxKrrpQFVVCzTtvTKfhBGkFIL9wSTZtTh4Vlh0GNGjUoVnlec7dWL-XeYVJax5tc93wV3F7TxKoJXizDTCMWAkSYV79QJn6zZPJZ_4");'>
+                            </div>
+                            <div class="flex flex-col items-center justify-center">
+                                <p
+                                    class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">
+                                    Sofia Mendes</p>
+                                <p class="text-gray-400 text-base font-normal leading-normal text-center">
+                                    sofia.mendes@email.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-4 space-y-6">
+                    <div>
+                        <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3 pt-4">Conta</h3>
+                        <div class="bg-gray-900 rounded-2xl">
+                            <div class="flex items-center gap-4 px-4 py-3 justify-between border-b border-gray-800">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="text-white flex items-center justify-center rounded-full bg-gray-800 shrink-0 size-12">
+                                        <span class="material-symbols-outlined">person</span>
+                                    </div>
+                                    <div class="flex flex-col justify-center">
+                                        <p class="text-white text-base font-medium leading-normal line-clamp-1">Nome</p>
+                                        <p class="text-gray-400 text-sm font-normal leading-normal line-clamp-2">Sofia
+                                            Mendes
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="shrink-0">
+                                    <span class="material-symbols-outlined text-white text-2xl">edit</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 px-4 py-3 justify-between border-b border-gray-800">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="text-white flex items-center justify-center rounded-full bg-gray-800 shrink-0 size-12">
+                                        <span class="material-symbols-outlined">account_balance</span>
+                                    </div>
+                                    <div class="flex flex-col justify-center">
+                                        <p class="text-white text-base font-medium leading-normal line-clamp-1">Email
+                                        </p>
+                                        <p class="text-gray-400 text-sm font-normal leading-normal line-clamp-2">
+                                            sofia.mendes@email.com
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="shrink-0">
+                                    <span class="material-symbols-outlined text-white text-2xl">edit</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 px-4 py-3 justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="text-white flex items-center justify-center rounded-full bg-gray-800 shrink-0 size-12">
+                                        <span class="material-symbols-outlined">credit_card</span>
+                                    </div>
+                                    <div class="flex flex-col justify-center">
+                                        <p class="text-white text-base font-medium leading-normal line-clamp-1">Senha
+                                        </p>
+                                        <p class="text-gray-400 text-sm font-normal leading-normal line-clamp-2">***
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="shrink-0">
+                                    <span class="material-symbols-outlined text-white text-2xl">edit</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3 pt-4">
+                            Configurações</h3>
+                        <div class="bg-gray-900 rounded-2xl">
+                            <div class="flex items-center gap-4 px-4 py-3 justify-between border-b border-gray-800">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="text-white flex items-center justify-center rounded-full bg-gray-800 shrink-0 size-10">
+                                        <span class="material-symbols-outlined">contrast</span>
+                                    </div>
+                                    <p class="text-white text-base font-normal leading-normal flex-1 truncate">Tema</p>
+                                </div>
+                                <div class="shrink-0 flex items-center gap-2">
+                                    <p class="text-gray-400 text-base font-normal leading-normal">Escuro</p>
+                                    <span class="material-symbols-outlined text-white text-2xl">chevron_right</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 px-4 py-3 justify-between border-b border-gray-800">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="text-white flex items-center justify-center rounded-full bg-gray-800 shrink-0 size-10">
+                                        <span class="material-symbols-outlined">notifications</span>
+                                    </div>
+                                    <p class="text-white text-base font-normal leading-normal flex-1 truncate">
+                                        Notificações</p>
+                                </div>
+                                <div class="shrink-0">
+                                    <label
+                                        class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-gray-700 p-0.5 has-[:checked]:justify-end has-[:checked]:bg-[var(--primary-color)]">
+                                        <div class="h-full aspect-square rounded-full bg-white transition-all duration-300"
+                                            style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px, rgba(0, 0, 0, 0.06) 0px 3px 1px;">
+                                        </div>
+                                        <input checked="" class="invisible absolute" type="checkbox" />
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Demo (apenas para apresentação) -->
+                            <div class="px-4 pt-6">
+                                <h3 class="text-white text-lg font-bold pb-3">Demo</h3>
+                                <div class="flex gap-2">
+                                    <button onclick="seedSampleData()" 
+                                            class="flex-1 py-2 px-4 bg-green-500 text-black rounded-2xl font-medium">
+                                    Popular dados de exemplo
+                                    </button>
+                                    <button onclick="clearAllData()" 
+                                            class="flex-1 py-2 px-4 bg-gray-700 text-white rounded-2xl font-medium">
+                                    Limpar dados
+                                    </button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer de Navegação -->
+    <footer class="sticky bottom-0">
+        <div class="flex justify-around border-t border-gray-700 bg-gray-900 pb-safe pt-2">
+            <a class="nav-button flex flex-col items-center justify-end gap-1 text-[#4ade80]" href="#" data-page="home">
+                <span class="material-symbols-outlined">home</span>
+                <p class="text-xs font-medium">Home</p>
+            </a>
+            <a class="nav-button flex flex-col items-center justify-end gap-1 text-gray-400" href="#"
+                data-page="transacoes">
+                <span class="material-symbols-outlined">receipt_long</span>
+                <p class="text-xs font-medium">Transações</p>
+            </a>
+            <a class="nav-button flex flex-col items-center justify-end gap-1 text-gray-400" href="#"
+                data-page="orcamento">
+                <span class="material-symbols-outlined">paid</span>
+                <p class="text-xs font-medium">Orçamento</p>
+            </a>
+            <a class="nav-button flex flex-col items-center justify-end gap-1 text-gray-400" href="#"
+                data-page="relatorios">
+                <span class="material-symbols-outlined">bar_chart</span>
+                <p class="text-xs font-medium">Relatórios</p>
+            </a>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="assets/jsfront.js"></script>
+    <!-- JS Chart para gráficos-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+
+</html>
