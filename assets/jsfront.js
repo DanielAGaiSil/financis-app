@@ -149,8 +149,6 @@
         }
       });
 
-      
-
       const total = data.reduce((a, b) => a + b, 0);
       const totalEl = document.getElementById("relatorio_total");
       if (totalEl) totalEl.textContent =
@@ -508,6 +506,55 @@
 
       renderTransactions(filtered);
     }
+    /* -------------- Busca por texto -------------- */
+    const searchInput = document.getElementById("searchTransactions");
+
+    function applySearchAndFilters() {
+      const term = searchInput?.value?.toLowerCase() || "";
+      const transactions = getTransactions();
+      let filtered = transactions.slice();
+
+      // aplica filtros existentes
+      if (filters.type && filters.type !== 'all') {
+        filtered = filtered.filter(tx => tx.type === filters.type);
+      }
+      if (filters.category && filters.category !== 'all') {
+        filtered = filtered.filter(tx => tx.category === filters.category);
+      }
+      if (filters.date && filters.date !== 'all') {
+        const now = new Date();
+        filtered = filtered.filter(tx => {
+          const txDate = new Date(tx.date);
+          if (isNaN(txDate)) return false;
+          if (filters.date === "today") {
+            return txDate.toDateString() === now.toDateString();
+          }
+          if (filters.date === "week") {
+            const startOfWeek = new Date(now);
+            startOfWeek.setHours(0,0,0,0);
+            startOfWeek.setDate(now.getDate() - now.getDay());
+            return txDate >= startOfWeek && txDate <= now;
+          }
+          if (filters.date === "month") {
+            return txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear();
+          }
+          return true;
+        });
+      }
+
+      // aplica busca por texto
+      if (term) {
+        filtered = filtered.filter(tx => 
+          tx.description?.toLowerCase().includes(term) ||
+          tx.categoryLabel?.toLowerCase().includes(term) ||
+          tx.category?.toLowerCase().includes(term)
+        );
+      }
+
+      renderTransactions(filtered);
+    }
+    // listener para busca em tempo real
+    searchInput?.addEventListener("input", applySearchAndFilters);
 
     // captura clique nas opções de filtro (delegação)
     document.addEventListener("click", e => {
@@ -793,5 +840,41 @@
     renderDespesasChart();
     renderRelatorioChart(periodoSelecionado);
     renderTopExpenses();
+
+    /* ---------- LÓGICA PERFIL ---------- */
+    // Voltar para home
+    document.getElementById("backToHome")?.addEventListener("click", () => {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.getElementById("home")?.classList.add("active");
+      window.scrollTo(0, 0);
+    });
+
+    // Abrir tela de detalhes do perfil
+    document.getElementById("openProfileDetails")?.addEventListener("click", () => {
+      document.getElementById("profileDetailsScreen")?.classList.remove("hidden");
+    });
+
+    // Fechar tela de detalhes do perfil
+    document.getElementById("closeProfileDetails")?.addEventListener("click", () => {
+      document.getElementById("profileDetailsScreen")?.classList.add("hidden");
+    });
+
+    // Abrir modal de edição
+    document.getElementById("openEditProfileModal")?.addEventListener("click", () => {
+      document.getElementById("editProfileModal")?.classList.remove("hidden");
+    });
+
+    // Fechar modal de edição
+    document.getElementById("cancelEditProfile")?.addEventListener("click", () => {
+      document.getElementById("editProfileModal")?.classList.add("hidden");
+    });
+
+    // Salvar (placeholder)
+    document.getElementById("editProfileForm")?.addEventListener("submit", e => {
+      e.preventDefault();
+      alert("Dados atualizados! (placeholder)");
+      document.getElementById("editProfileModal")?.classList.add("hidden");
+    });
+
   });
 })();

@@ -130,17 +130,13 @@
                     </div>
 
                     <!-- Barra de busca -->
-                    <div class="px-4 pb-3 pt-1">
-                        <div class="relative">
-                            <span
-                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
-                            <input
-                                class="form-input w-full rounded-full border-none bg-zinc-800 py-2.5 pl-10 pr-4 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
-                                placeholder="Buscar transações" type="text" />
+                    <div class="px-4 py-2">
+                        <input id="searchTransactions"
+                            type="text"
+                            placeholder="Buscar transações..."
+                            class="w-full rounded-lg bg-zinc-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring focus:ring-emerald-500" />
                         </div>
-                    </div>
-
-                    <!-- Filtros -->
+            <!-- Filtros -->
             <div class="flex gap-2 p-4 pt-0 overflow-x-auto">
                 <!-- Filtro por Data -->
                 <div class="relative">
@@ -430,93 +426,38 @@
             </div>
         </div>
     </div>
-
-    <!-- Página Perfil -->
-    <div id="perfil" class="page">
+  
+       <!-- Página Perfil -->
+        <div id="perfil" class="page">
         <div class="relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gray-950">
             <div class="flex-grow">
-                <div class="flex items-center p-4 pb-2 justify-between">
-                    <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-6">
-                        Perfil</h2>
-                </div>
+            
+            <!-- TOPO COM SETA VOLTAR + BOTÃO VER DADOS -->
+            <div class="flex items-center p-4 pb-2 justify-between relative">
+                <button id="backToHome" class="absolute left-4 p-1 rounded-full hover:bg-gray-800">
+                <span class="material-symbols-outlined text-white text-2xl">arrow_back</span>
+                </button>
+                <h2 class="text-white text-lg font-bold flex-1 text-center">Perfil</h2>
+                <button id="openProfileDetails" class="absolute right-4 p-1 rounded-full hover:bg-gray-800 flex items-center gap-1">
+                <span class="material-symbols-outlined text-white text-xl">visibility</span>
+                <span class="text-white text-sm font-medium">Ver dados</span>
+                </button>
+            </div>
 
-                <div class="flex p-4">
-                    <div class="flex w-full flex-col gap-4 items-center">
-                        <div class="flex gap-4 flex-col items-center">
-                            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full min-h-32 w-32"
-                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBEv-nJw6VVSMQzjKve1SVJjyRdc95XeV3q5OqTgU75lmLzTr7s9scoEG1pcy-oCf6Z7ZC1T-f5eiui9gn01o3l6xPX6n8sMIbLH-aC4_1O2JlPI5zB7iAbkwY_sFu7QYmlEHvYFll1wA_642yf40taefnQW3vtz8qqK4jDYJxKrrpQFVVCzTtvTKfhBGkFIL9wSTZtTh4Vlh0GNGjUoVnlec7dWL-XeYVJax5tc93wV3F7TxKoJXizDTCMWAkSYV79QJn6zZPJZ_4");'>
-                            </div>
-                            <div class="flex flex-col items-center justify-center">
-                                <p
-                                    class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">
-                                    Sofia Mendes</p>
-                                <p class="text-gray-400 text-base font-normal leading-normal text-center">
-                                    sofia.mendes@email.com</p>
-                            </div>
-                        </div>
+            <!-- CONTEÚDO VISUAL DO PERFIL (somente avatar e nome) -->
+            <div class="flex p-4">
+                <div class="flex w-full flex-col gap-4 items-center">
+                <div class="flex gap-4 flex-col items-center">
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full min-h-32 w-32"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBEv-nJw6VVSMQzjKve1SVJjyRdc95XeV3q5OqTgU75lmLzTr7s9scoEG1pcy-oCf6Z7ZC1T-f5eiui9gn01o3l6xPX6n8sMIbLH-aC4_1O2JlPI5zB7iAbkwY_sFu7QYmlEHvYFll1wA_642yf40taefnQW3vtz8qqK4jDYJxKrrpQFVVCzTtvTKfhBGkFIL9wSTZtTh4Vlh0GNGjUoVnlec7dWL-XeYVJax5tc93wV3F7TxKoJXizDTCMWAkSYV79QJn6zZPJZ_4");'>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                    <p class="text-white text-[22px] font-bold">Sofia Mendes</p>
+                    <p class="text-gray-400 text-base">sofia.mendes@email.com</p>
                     </div>
                 </div>
-
-                <div class="px-4 space-y-6">
-                    <div>
-                        <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3 pt-4">Conta</h3>
-                        <div class="bg-gray-900 rounded-2xl">
-                            <div class="flex items-center gap-4 px-4 py-3 justify-between border-b border-gray-800">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="text-white flex items-center justify-center rounded-full bg-gray-800 shrink-0 size-12">
-                                        <span class="material-symbols-outlined">person</span>
-                                    </div>
-                                    <div class="flex flex-col justify-center">
-                                        <p class="text-white text-base font-medium leading-normal line-clamp-1">Nome</p>
-                                        <p class="text-gray-400 text-sm font-normal leading-normal line-clamp-2">Sofia
-                                            Mendes
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0">
-                                    <span class="material-symbols-outlined text-white text-2xl">edit</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4 px-4 py-3 justify-between border-b border-gray-800">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="text-white flex items-center justify-center rounded-full bg-gray-800 shrink-0 size-12">
-                                        <span class="material-symbols-outlined">account_balance</span>
-                                    </div>
-                                    <div class="flex flex-col justify-center">
-                                        <p class="text-white text-base font-medium leading-normal line-clamp-1">Email
-                                        </p>
-                                        <p class="text-gray-400 text-sm font-normal leading-normal line-clamp-2">
-                                            sofia.mendes@email.com
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0">
-                                    <span class="material-symbols-outlined text-white text-2xl">edit</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4 px-4 py-3 justify-between">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="text-white flex items-center justify-center rounded-full bg-gray-800 shrink-0 size-12">
-                                        <span class="material-symbols-outlined">credit_card</span>
-                                    </div>
-                                    <div class="flex flex-col justify-center">
-                                        <p class="text-white text-base font-medium leading-normal line-clamp-1">Senha
-                                        </p>
-                                        <p class="text-gray-400 text-sm font-normal leading-normal line-clamp-2">***
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0">
-                                    <span class="material-symbols-outlined text-white text-2xl">edit</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
+                </div>
+            </div>
                         <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3 pt-4">
                             Configurações</h3>
                         <div class="bg-gray-900 rounded-2xl">
@@ -566,13 +507,48 @@
                                     </button>
                                     </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+
+    <!-- NOVA "TELA" DETALHES DO PERFIL -->
+    <div id="profileDetailsScreen"
+    class="fixed inset-0 bg-gray-950 hidden z-50 flex flex-col">
+    
+    <!-- Header da tela de detalhes -->
+    <div class="flex items-center p-4 pb-2 justify-between relative">
+        <button id="closeProfileDetails" class="absolute left-4 p-1 rounded-full hover:bg-gray-800">
+        <span class="material-symbols-outlined text-white text-2xl">arrow_back</span>
+        </button>
+        <h2 class="text-white text-lg font-bold flex-1 text-center">Seus Dados</h2>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="flex flex-col p-4 gap-4">
+        <div class="bg-gray-900 rounded-2xl p-4">
+        <p class="text-gray-400 text-sm">Nome</p>
+        <p class="text-white text-lg font-medium">Sofia Mendes</p>
+        </div>
+        <div class="bg-gray-900 rounded-2xl p-4">
+        <p class="text-gray-400 text-sm">Email</p>
+        <p class="text-white text-lg font-medium">sofia.mendes@email.com</p>
+        </div>
+        <div class="bg-gray-900 rounded-2xl p-4">
+        <p class="text-gray-400 text-sm">Senha</p>
+        <p class="text-white text-lg font-medium">********</p>
+        </div>
+
+        <!-- Botão de editar com ícone de lápis -->
+        <button id="openEditProfileModal"
+        class="mt-4 px-4 py-3 bg-[var(--primary-color)] text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90">
+        <span class="material-symbols-outlined">edit</span> Editar Dados
+        </button>
+    </div>
     </div>
 
     <!-- Footer de Navegação -->
